@@ -3,7 +3,7 @@
 " An example for a Japanese version vimrc file.
 " 日本語版のデフォルト設定ファイル(vimrc) - Vim7用試作
 "
-" Last Change: 12-Nov-2014.
+" Last Change: 25-Dec-2018.
 " Maintainer:  MURAOKA Taro <koron.kaoriya@gmail.com>
 "
 " 解説:
@@ -66,36 +66,53 @@ for s:path in split(glob($VIM.'/plugins/*'), '\n')
 endfor
 unlet s:path
 "---------------------------------------------------------------------------
-"プラグインのインストール
-"neobundle.vimのインストール
+" deinの設定
+"矢印キーを押した時にABCDが出るのを防ぐ
 set nocompatible
 filetype plugin indent off
 
 if has('vim_starting')
-    set runtimepath+=~\.vim\bundle\neobundle.vim
+    set runtimepath+=$HOME/.vim/dein/repos/github.com/Shougo/dein.vim
 endif
 
-call neobundle#begin(expand('$HOME\.vim\bundle\'))
-" 必要に応じて追加
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'grep.vim'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'tomtom/tcomment_vim'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'vim-scripts/AnsiEsc.vim'
-NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'Shougo/vimfiler.git'
-NeoBundle 'Shougo/vimshell.git'
-NeoBundle 'Shougo/vimproc.git'
-call neobundle#end()
+" Required:
+if dein#load_state('$HOME/.vim/dein/')
+  call dein#begin('$HOME/.vim/dein/')
 
-syntax on
+  " Let dein manage dein
+  " Required:
+  call dein#add('$HOME/.vim/dein/repos/github.com/Shougo/dein.vim')
+
+  " Add or remove your plugins here:
+  call dein#add('Shougo/neosnippet.vim')
+  call dein#add('Shougo/neosnippet-snippets')
+
+  " You can specify revision/branch/tag.
+  call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+  call dein#add('Shougo/unite.vim')
+  call dein#add('Shougo/neocomplete.vim')
+  call dein#add('scrooloose/nerdtree')
+  call dein#add('thinca/vim-quickrun')
+  call dein#add('tomasr/molokai')
+  call dein#add('tomtom/tcomment_vim')
+  call dein#add('tpope/vim-surround')
+  call dein#add('nathanaelkane/vim-indent-guides')
+  call dein#add('vim-scripts/AnsiEsc.vim')
+  call dein#add('bronson/vim-trailing-whitespace')
+  call dein#add('derekwyatt/vim-scala')
+  call dein#add('slim-template/vim-slim')
+
+  " Required:
+  call dein#end()
+
+  if dein#check_install()
+        call dein#install()
+  endif
+endif
+
+" 以下は必要に応じて追加
 filetype plugin indent on
+syntax on
 "---------------------------------------------------------------------------
 " neocompleteの設定
 " 起動時に有効化
