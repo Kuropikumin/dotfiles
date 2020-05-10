@@ -1,6 +1,7 @@
 "---------------------------------------------------------------------------
 " 文字エンコーディングのお話
 set fileencodings=ucs-bom,iso-2022-jp,utf-8,cp932,euc-jp,default,latin
+
 "---------------------------------------------------------------------------
 " neobundleの設定
 "矢印キーを押した時にABCDが出るのを防ぐ
@@ -8,28 +9,25 @@ set nocompatible
 filetype plugin indent off
 
 if has('vim_starting')
-    set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+    set runtimepath+=$HOME/.vim/dein/repos/github.com/Shougo/dein.vim
 endif
 
 " Required:
-if dein#load_state('~/.vim/dein/')
-  call dein#begin('~/.vim/dein/')
+if dein#load_state('$HOME/.vim/dein/')
+  call dein#begin('$HOME/.vim/dein/')
 
   " Let dein manage dein
   " Required:
-  call dein#add('~/.vim/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add('$HOME/.vim/dein/repos/github.com/Shougo/dein.vim')
 
   " Add or remove your plugins here:
   call dein#add('Shougo/neosnippet.vim')
   call dein#add('Shougo/neosnippet-snippets')
 
   " You can specify revision/branch/tag.
-  call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
   call dein#add('Shougo/unite.vim')
   call dein#add('Shougo/neocomplete.vim')
   call dein#add('scrooloose/nerdtree')
-  call dein#add('thinca/vim-quickrun')
-  call dein#add('tomasr/molokai')
   call dein#add('tomtom/tcomment_vim')
   call dein#add('tpope/vim-surround')
   call dein#add('nathanaelkane/vim-indent-guides')
@@ -148,10 +146,12 @@ set title
 
 "色に関する設定:
 " カラー設定:
-set t_Co=256
-set background=dark
+" 背景色をTerminalの色に合わせる
+autocmd ColorScheme * highlight Normal ctermbg=none
+autocmd ColorScheme * highlight LineNr ctermbg=none
+
 " let g:solarized_termcolors=16
-colorscheme molokai
+colorscheme elflord
 
 syntax on
 "---------------------------------------------------------------------------
@@ -210,3 +210,34 @@ function! s:GetHighlight(hi)
     return hl
 endfunction
 "----------------------------------------------------------------------------
+" 操作していないときだけ、cursorline を起動する
+augroup vimrc-auto-cursorline
+  autocmd!
+  autocmd CursorMoved,CursorMovedI * call s:auto_cursorline('CursorMoved')
+  autocmd CursorHold,CursorHoldI * call s:auto_cursorline('CursorHold')
+  autocmd WinEnter * call s:auto_cursorline('WinEnter')
+  autocmd WinLeave * call s:auto_cursorline('WinLeave')
+  let s:cursorline_lock = 0
+
+  function! s:auto_cursorline(event)
+    if a:event ==# 'WinEnter'
+      setlocal cursorline
+      let s:cursorline_lock = 2
+    elseif a:event ==# 'WinLeave'
+      setlocal nocursorline
+    elseif a:event ==# 'CursorMoved'
+      if s:cursorline_lock
+        if 1 < s:cursorline_lock
+          let s:cursorline_lock = 1
+        else
+          setlocal nocursorline
+          let s:cursorline_lock = 0
+        endif
+      endif
+    elseif a:event ==# 'CursorHold'
+      setlocal cursorline
+      let s:cursorline_lock = 1
+    endif
+  endfunction
+augroup END
+" -------------------------------------------------------
