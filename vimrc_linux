@@ -242,3 +242,8 @@ augroup vimrc-auto-cursorline
   endfunction
 augroup END
 " -------------------------------------------------------
+"  vim 起動時にREPLACEモードになる問題
+"  set t_u7, set t_RV で回避可能なので追加
+set t_u7=
+set t_RV=
+" -------------------------------------------------------
