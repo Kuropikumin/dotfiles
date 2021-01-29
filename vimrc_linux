@@ -1,6 +1,8 @@
 "---------------------------------------------------------------------------
 " 文字エンコーディングのお話
-set fileencodings=ucs-bom,iso-2022-jp,utf-8,cp932,euc-jp,default,latin
+set encoding=utf-8
+set fileencodings=utf-8,ucs-bom,iso-2022-jp,cp932,euc-jp,default,latin
+set fileformats=unix,dos,mac
 
 "---------------------------------------------------------------------------
 " neobundleの設定
@@ -14,35 +16,45 @@ endif
 
 " Required:
 if dein#load_state('$HOME/.vim/dein/')
-  call dein#begin('$HOME/.vim/dein/')
+    call dein#begin('$HOME/.vim/dein/')
 
-  " Let dein manage dein
-  " Required:
-  call dein#add('$HOME/.vim/dein/repos/github.com/Shougo/dein.vim')
+    " Let dein manage dein
+    " Required:
+    call dein#add('$HOME/.vim/dein/repos/github.com/Shougo/dein.vim')
 
-  " Add or remove your plugins here:
-  call dein#add('Shougo/neosnippet.vim')
-  call dein#add('Shougo/neosnippet-snippets')
+    " Add or remove your plugins here:
+    call dein#add('Shougo/neosnippet.vim')
+    call dein#add('Shougo/neosnippet-snippets')
 
-  " You can specify revision/branch/tag.
-  call dein#add('Shougo/unite.vim')
-  call dein#add('Shougo/neocomplete.vim')
-  call dein#add('scrooloose/nerdtree')
-  call dein#add('tomtom/tcomment_vim')
-  call dein#add('tpope/vim-surround')
-  call dein#add('nathanaelkane/vim-indent-guides')
-  call dein#add('vim-scripts/AnsiEsc.vim')
-  call dein#add('bronson/vim-trailing-whitespace')
-  call dein#add('derekwyatt/vim-scala')
-  call dein#add('slim-template/vim-slim')
-  call dein#add('tomasr/molokai')
+    " You can specify revision/branch/tag.
+    call dein#add('Shougo/unite.vim')
+    call dein#add('scrooloose/nerdtree')
+    call dein#add('tomtom/tcomment_vim')
+    call dein#add('tpope/vim-surround')
+    call dein#add('nathanaelkane/vim-indent-guides')
+    call dein#add('vim-scripts/AnsiEsc.vim')
+    call dein#add('bronson/vim-trailing-whitespace')
+    call dein#add('derekwyatt/vim-scala')
+    call dein#add('slim-template/vim-slim')
+    call dein#add('tomasr/molokai')
 
-  " Required:
-  call dein#end()
+    " install deoplete/neocomplete
+    if ( ( has( 'nvim' ) || has( 'timers' ) ) && has('python3') )
+        call dein#add('Shougo/deoplete.nvim')
+        if !has('nvim')
+            call dein#add('roxma/nvim-yarp')
+            call dein#add('roxma/vim-hug-neovim-rpc')
+        endif
+    elseif has('lua')
+        call dein#add('Shougo/neocomplete.vim')
+    endif
 
-  if dein#check_install()
-        call dein#install()
-  endif
+    " Required:
+    call dein#end()
+
+    if dein#check_install()
+            call dein#install()
+    endif
 endif
 
 " 以下は必要に応じて追加
@@ -106,7 +118,7 @@ set tabstop=4
 set softtabstop=4
 " tabの代わりに半角スペースを挿入する
 set shiftwidth=4
-" タブをスペースに展開しない (noexpandtab:展開しない)
+" タブをスペースに展開する (noexpandtab:展開しない)
 set expandtab
 " 自動的にインデントする (noautoindent:インデントしない)
 set autoindent
@@ -241,4 +253,9 @@ augroup vimrc-auto-cursorline
     endif
   endfunction
 augroup END
+" -------------------------------------------------------
+" Vim起動時にReplaceモードになる場合があるため、その対策として
+" t_u7、t_RVを無設定にする
+set t_u7=
+set t_RV=
 " -------------------------------------------------------
