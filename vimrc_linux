@@ -4,16 +4,17 @@ set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,iso-2022-jp,cp932,euc-jp,default,latin
 set fileformats=unix,dos,mac
 
+"---------------------------------------------------------------------------
+" その他設定
+
 "矢印キーを押した時にABCDが出るのを防ぐ
 set nocompatible
 
-filetype plugin indent off
-
 "---------------------------------------------------------------------------
 " dein の設定
-" if has('vim_starting')
-"     set runtimepath+=$HOME/.vim/dein/repos/github.com/Shougo/dein.vim
-" endif
+
+" deinでのプラグインをインストールする前に一旦OFFにする
+filetype plugin indent off
 
 " 変数の設定
 let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.vim/bundle') : $XDG_CACHE_HOME

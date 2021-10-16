@@ -18,3 +18,9 @@ repo = 'bronson/vim-trailing-whitespace'
 
 [[plugins]]
 repo = 'tomasr/molokai'
+
+[[plugins]]
+repo   = 'neoclide/coc.nvim'
+if     = '''executable('node') && executable('yarn')'''
+merged = '0'
+rev    = 'release'
